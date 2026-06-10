@@ -97,13 +97,6 @@ export default function Header() {
               </Link>
             );
           })}
-          
-          {/* Botão da Área do Aluno adaptado para o menu do celular */}
-          <div className="pt-4 px-4">
-            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-center py-3 rounded-xl text-base font-bold transition-all shadow-md shadow-blue-500/10">
-              Área do Aluno
-            </button>
-          </div>
         </div>
       </div>
     </header>
