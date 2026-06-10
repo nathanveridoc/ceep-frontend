@@ -1,13 +1,14 @@
-"use client"; // Indica que este componente roda no lado do cliente para usar o usePathname
+"use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 export default function Header() {
-  const pathname = usePathname(); // Captura a rota atual (ex: "/" ou "/cursos")
+  const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false); // Estado para controlar o menu no celular
 
-  // Lista de links do menu
   const links = [
     { nome: "Home", rota: "/" },
     { nome: "Cursos", rota: "/cursos" },
@@ -34,20 +35,18 @@ export default function Header() {
           </div>
         </Link>
 
-        {/* Menu de Navegação Dinâmico */}
+        {/* Menu de Navegação - DESKTOP (Invisível no celular) */}
         <nav className="hidden md:flex items-center gap-8">
           {links.map((link) => {
-            // Verifica se a rota atual é igual à rota do link
             const isActive = pathname === link.rota;
-
             return (
               <Link
                 key={link.nome}
                 href={link.rota}
                 className={`text-sm font-semibold pb-1 transition-all duration-200 border-b-2 ${
                   isActive
-                    ? "text-blue-600 border-blue-600" // Estilo ativo (azul e sublinhado)
-                    : "text-slate-600 border-transparent hover:text-blue-600 hover:border-blue-600/50" // Estilo inativo
+                    ? "text-blue-600 border-blue-600"
+                    : "text-slate-600 border-transparent hover:text-blue-600 hover:border-blue-600/50"
                 }`}
               >
                 {link.nome}
@@ -56,13 +55,56 @@ export default function Header() {
           })}
         </nav>
 
-        {/* Botão de Ação Rápida */}
-        <div className="hidden sm:block">
-          <button className="bg-blue-50 text-blue-700 hover:bg-blue-100 px-4 py-2 rounded-lg text-sm font-bold transition-all">
-            Área do Aluno
+        {/* Botão do Menu Hamburguer - APENAS CELULAR */}
+        <div className="flex md:hidden">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            type="button"
+            className="text-slate-600 hover:text-blue-600 focus:outline-none p-2 rounded-lg hover:bg-slate-100 transition-colors"
+            aria-label="Toggle menu"
+          >
+            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              {isOpen ? (
+                // Ícone de "X" quando o menu está aberto
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                // Ícone de "Três Listras" quando o menu está fechado
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
           </button>
         </div>
 
+      </div>
+
+      {/* Menu de Navegação - APENAS CELULAR (Aparece com transição suave ao clicar) */}
+      <div className={`md:hidden transition-all duration-300 ease-in-out ${isOpen ? "max-h-screen opacity-100 visible" : "max-h-0 opacity-0 invisible overflow-hidden"}`}>
+        <div className="px-4 pt-2 pb-6 space-y-2 bg-white border-t border-slate-100 shadow-inner">
+          {links.map((link) => {
+            const isActive = pathname === link.rota;
+            return (
+              <Link
+                key={link.nome}
+                href={link.rota}
+                onClick={() => setIsOpen(false)} // Fecha o menu ao clicar em um link
+                className={`block px-4 py-3 rounded-xl text-base font-semibold transition-colors ${
+                  isActive
+                    ? "bg-blue-50 text-blue-600"
+                    : "text-slate-600 hover:bg-slate-50 hover:text-blue-600"
+                }`}
+              >
+                {link.nome}
+              </Link>
+            );
+          })}
+          
+          {/* Botão da Área do Aluno adaptado para o menu do celular */}
+          <div className="pt-4 px-4">
+            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-center py-3 rounded-xl text-base font-bold transition-all shadow-md shadow-blue-500/10">
+              Área do Aluno
+            </button>
+          </div>
+        </div>
       </div>
     </header>
   );
