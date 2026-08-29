@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 
 export default function Header() {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false); // Estado para controlar o menu no celular
+  const [isOpen, setIsOpen] = useState(false);
 
   const links = [
     { nome: "Home", rota: "/" },
@@ -19,10 +19,9 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200/80 bg-white/80 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        
-        {/* Logo CEEP */}
+
         <Link href="/" className="flex items-center gap-3 cursor-pointer">
-          <Image 
+          <Image
             src="/ceep-logo.png"
             alt="Logo CEEP Curitiba"
             width={48}
@@ -35,7 +34,6 @@ export default function Header() {
           </div>
         </Link>
 
-        {/* Menu de Navegação - DESKTOP (Invisível no celular) */}
         <nav className="hidden md:flex items-center gap-8">
           {links.map((link) => {
             const isActive = pathname === link.rota;
@@ -55,7 +53,6 @@ export default function Header() {
           })}
         </nav>
 
-        {/* Botão do Menu Hamburguer - APENAS CELULAR */}
         <div className="flex md:hidden">
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -65,10 +62,8 @@ export default function Header() {
           >
             <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               {isOpen ? (
-                // Ícone de "X" quando o menu está aberto
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
               ) : (
-                // Ícone de "Três Listras" quando o menu está fechado
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
               )}
             </svg>
@@ -77,7 +72,6 @@ export default function Header() {
 
       </div>
 
-      {/* Menu de Navegação - APENAS CELULAR (Aparece com transição suave ao clicar) */}
       <div className={`md:hidden transition-all duration-300 ease-in-out ${isOpen ? "max-h-screen opacity-100 visible" : "max-h-0 opacity-0 invisible overflow-hidden"}`}>
         <div className="px-4 pt-2 pb-6 space-y-2 bg-white border-t border-slate-100 shadow-inner">
           {links.map((link) => {
@@ -86,7 +80,7 @@ export default function Header() {
               <Link
                 key={link.nome}
                 href={link.rota}
-                onClick={() => setIsOpen(false)} // Fecha o menu ao clicar em um link
+                onClick={() => setIsOpen(false)}
                 className={`block px-4 py-3 rounded-xl text-base font-semibold transition-colors ${
                   isActive
                     ? "bg-blue-50 text-blue-600"

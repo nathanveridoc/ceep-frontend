@@ -5,7 +5,6 @@ export async function POST(request: Request) {
     const body = await request.json();
     const cpfLimpo = body?.cpf ? body.cpf.replace(/\D/g, "") : "";
 
-    // Validação básica no servidor
     if (!cpfLimpo || cpfLimpo.length !== 11) {
       return NextResponse.json(
         { error: "CPF inválido." },
@@ -15,7 +14,7 @@ export async function POST(request: Request) {
 
     const backendUrl = process.env.BACKENDURL;
 
-    const response = await fetch(`${backendUrl}/inscricao/bycpf`, {
+    const response = await fetch(`${backendUrl}/aluno/bycpf`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

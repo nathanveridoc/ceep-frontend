@@ -4,8 +4,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="relative overflow-hidden">
-      {/* ... (Seu código anterior permanece igual até a seção de "Por que estudar no CEEP?") ... */}
-      
+
       <section className="relative bg-gradient-to-b from-blue-50 via-white to-slate-50 py-20 lg:py-28 border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
@@ -31,7 +30,7 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-to-tr from-blue-600 to-indigo-500 rounded-3xl rotate-3 scale-105 opacity-10 blur-lg"></div>
             <div className="relative bg-white border border-slate-100 rounded-3xl p-4 shadow-2xl">
               <div className="relative h-64 sm:h-80 w-full rounded-2xl overflow-hidden">
-                <Image 
+                <Image
                   src="/ceep-escola.jpg"
                   alt="Fachada do CEEP Curitiba"
                   fill
@@ -59,17 +58,17 @@ export default function Home() {
               Atenção Estudantes
             </span>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
-              PESQUISA DE INTERESSE – CURSO TÉCNICO SUBSEQUENTE AO ENSINO MÉDIO
+              PESQUISA DE INTERESSE – ENSINO MÉDIO COM CURSO PROFISSIONALIZANTE INTEGRADO
             </h2>
             <p className="text-blue-100 text-lg font-medium">
-              Período Noturno — 2º Semestre de 2026
+              Período vespertino para primeiros anos — 2027
             </p>
             <p className="text-blue-100/80 text-sm sm:text-base leading-relaxed">
-              Se você já concluiu o Ensino Médio e deseja se especializar com um curso técnico gratuito no período da noite, responda ao nosso formulário de interesse para nos ajudar a planejar as turmas.
+              Caso você queira cursar o Ensino Médio e deseja se especializar com um curso técnico gratuito no período da tarde(nos primeiros anos), responda ao nosso formulário de interesse para nos ajudar a planejar as turmas.
             </p>
             <div className="pt-4">
-              <Link 
-                href="/inscricao" 
+              <Link
+                href="/inscricao"
                 className="inline-flex items-center gap-2 bg-white hover:bg-amber-400 text-blue-900 hover:text-slate-950 font-extrabold px-8 py-4 rounded-xl shadow-lg transition-all hover:scale-[1.02]"
               >
                 Responder Pesquisa de Interesse
@@ -82,12 +81,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* NOVA SEÇÃO: HISTÓRIA */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            
-            {/* Texto de Apresentação */}
+
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
                 80 Anos de Tradição e Excelência
@@ -102,7 +99,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Linha do Tempo */}
             <div className="relative border-l-2 border-blue-200 ml-3 space-y-10">
               <div className="relative pl-8">
                 <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-blue-600"></div>

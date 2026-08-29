@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "./components/Header"; // Importa o novo Header dinâmico
+import Header from "./components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,16 +18,13 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="scroll-smooth">
       <body className={`${inter.className} bg-slate-50 text-slate-900 flex flex-col min-h-screen`}>
-        
-        {/* HEADER DINÂMICO (Importado do componente cliente) */}
+
         <Header />
 
-        {/* CONTEÚDO DA PÁGINA */}
         <main className="flex-grow">
           {children}
         </main>
 
-        {/* FOOTER / RODAPÉ */}
         <footer className="bg-slate-900 text-slate-400 border-t border-slate-800 py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">

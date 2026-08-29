@@ -2,16 +2,20 @@
 
 import React, { useState } from "react";
 
-// Lista com os IDs e nomes cadastrados no seu banco MySQL
 const CURSOS_DISPONIVEIS = [
-  { id_curso: 4, label: "BIOTECNOLOGIA - NOITE" },
-  { id_curso: 5, label: "QUÍMICA - NOITE" },
-  { id_curso: 6, label: "ELETROMECÂNICA - NOITE" },
-  { id_curso: 7, label: "MECÂNICA - NOITE" },
-  { id_curso: 8, label: "EDIFICAÇÕES - NOITE" },
+  { id_curso: 12, label: "Biotecnologia" },
+  { id_curso: 13, label: "Desenvolvimento de Sistemas" },
+  { id_curso: 14, label: "Edificações" },
+  { id_curso: 15, label: "Eletromecânica" },
+  { id_curso: 16, label: "Eletrônica" },
+  { id_curso: 17, label: "Farmácia" },
+  { id_curso: 18, label: "Manutenção Automotiva" },
+  { id_curso: 19, label: "Mecânica" },
+  { id_curso: 20, label: "Meio ambiente" },
+  { id_curso: 21, label: "Programação de jogos digitais" },
+  { id_curso: 22, label: "Química" },
 ];
 
-// --- FUNÇÕES DE VALIDAÇÃO ---
 function validarCPF(cpf: string): boolean {
   const limpo = cpf.replace(/[^\d]+/g, "");
   if (limpo.length !== 11 || !!limpo.match(/^(.)\1+$/)) return false;
@@ -40,8 +44,9 @@ function validarEmail(email: string): boolean {
 }
 
 export default function InscricaoPesquisaInteresse() {
-  // Estados do formulário
-  const [idCurso, setIdCurso] = useState<number | null>(null);
+  const [idCurso1, setIdCurso1] = useState<number | null>(null);
+  const [idCurso2, setIdCurso2] = useState<number | null>(null);
+
   const [nome, setNome] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
   const [outroTelefone, setOutroTelefone] = useState("");
@@ -49,13 +54,11 @@ export default function InscricaoPesquisaInteresse() {
   const [cpf, setCpf] = useState("");
   const [lgpdAceite, setLgpdAceite] = useState(false);
 
-  // Estados de controle de requisição
   const [carregando, setCarregando] = useState(false);
   const [checandoCpf, setChecandoCpf] = useState(false);
   const [erroApi, setErroApi] = useState<string | null>(null);
   const [enviado, setEnviado] = useState(false);
 
-  // Estados do POPUP / MODAL de CPF duplicado
   const [modalCpfDuplicado, setModalCpfDuplicado] = useState(false);
   const [inscricaoExistente, setInscricaoExistente] = useState<{
     nome_aluno?: string;
@@ -64,22 +67,21 @@ export default function InscricaoPesquisaInteresse() {
     data_inscricao?: string;
   } | null>(null);
 
-  // Estados de erro visual nos inputs
   const [erros, setErros] = useState({
-    curso: false,
+    curso1: false,
+    cursoDuplicado: false,
     cpf: false,
     whatsapp: false,
     email: false,
   });
 
-  // Função para checar CPF no backend via POST
   const verificarCpfExistente = async (cpfValor: string): Promise<boolean> => {
     const limpo = cpfValor.replace(/\D/g, "");
     if (limpo.length !== 11 || !validarCPF(cpfValor)) return false;
 
     setChecandoCpf(true);
     try {
-      const res = await fetch("/api/inscricao/bycpf", {
+      const res = await fetch("/api/aluno/bycpf", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,17 +93,16 @@ export default function InscricaoPesquisaInteresse() {
         const data = await res.json();
         setInscricaoExistente(data);
         setModalCpfDuplicado(true);
-        return true; // CPF já cadastrado
+        return true;
       }
     } catch (err) {
       console.error("Erro ao consultar CPF:", err);
     } finally {
       setChecandoCpf(false);
     }
-    return false; // CPF liberado
+    return false;
   };
 
-  // Máscara do CPF
   const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let valor = e.target.value.replace(/\D/g, "");
     if (valor.length <= 11) {
@@ -114,7 +115,6 @@ export default function InscricaoPesquisaInteresse() {
     if (erros.cpf) setErros((prev) => ({ ...prev, cpf: false }));
   };
 
-  // Máscara para Telefone / Celular
   const handleTelefoneChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     setTelefone: React.Dispatch<React.SetStateAction<string>>,
@@ -137,9 +137,15 @@ export default function InscricaoPesquisaInteresse() {
     e.preventDefault();
     setErroApi(null);
 
-    if (!idCurso) {
-      setErros((prev) => ({ ...prev, curso: true }));
-      alert("Por favor, selecione um curso.");
+    if (!idCurso1) {
+      setErros((prev) => ({ ...prev, curso1: true }));
+      alert("Por favor, selecione ao menos a 1ª Opção de curso.");
+      return;
+    }
+
+    if (idCurso1 && idCurso2 && idCurso1 === idCurso2) {
+      setErros((prev) => ({ ...prev, cursoDuplicado: true }));
+      alert("A 1ª e a 2ª opção não podem ser o mesmo curso.");
       return;
     }
 
@@ -153,7 +159,8 @@ export default function InscricaoPesquisaInteresse() {
     const emailValido = validarEmail(email);
 
     setErros({
-      curso: !idCurso,
+      curso1: !idCurso1,
+      cursoDuplicado: idCurso1 !== null && idCurso1 === idCurso2,
       cpf: !cpfValido,
       whatsapp: !whatsValido,
       email: !emailValido,
@@ -164,13 +171,13 @@ export default function InscricaoPesquisaInteresse() {
       return;
     }
 
-    // Consulta no backend se o CPF já está registrado
     const jaExiste = await verificarCpfExistente(cpf);
     if (jaExiste) return;
 
-    // Monta o payload conforme o backend espera
     const payload = {
-      id_curso: idCurso,
+      id_curso: idCurso1,
+      id_curso_1: idCurso1,
+      id_curso_2: idCurso2 || null,
       nome_aluno: nome.trim(),
       contato_whatsapp: whatsapp.replace(/\D/g, ""),
       telefone: outroTelefone ? outroTelefone.replace(/\D/g, "") : "",
@@ -205,7 +212,8 @@ export default function InscricaoPesquisaInteresse() {
   };
 
   const limparFormulario = () => {
-    setIdCurso(null);
+    setIdCurso1(null);
+    setIdCurso2(null);
     setNome("");
     setWhatsapp("");
     setOutroTelefone("");
@@ -216,20 +224,21 @@ export default function InscricaoPesquisaInteresse() {
     setInscricaoExistente(null);
     setModalCpfDuplicado(false);
     setErros({
-      curso: false,
+      curso1: false,
+      cursoDuplicado: false,
       cpf: false,
       whatsapp: false,
       email: false,
     });
   };
 
-  // TELA DE SUCESSO
   if (enviado) {
-    const cursoSelecionado = CURSOS_DISPONIVEIS.find((c) => c.id_curso === idCurso);
+    const curso1 = CURSOS_DISPONIVEIS.find((c) => c.id_curso === idCurso1);
+    const curso2 = CURSOS_DISPONIVEIS.find((c) => c.id_curso === idCurso2);
 
     return (
       <div className="bg-slate-50 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full bg-white p-8 rounded-3xl border border-slate-200 shadow-xl text-center space-y-4">
+        <div className="max-w-lg w-full bg-white p-8 rounded-3xl border border-slate-200 shadow-xl text-center space-y-5">
           <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">
             ✓
           </div>
@@ -237,11 +246,22 @@ export default function InscricaoPesquisaInteresse() {
             🎉 Inscrição Registrada!
           </h2>
           <p className="text-sm text-slate-600 leading-relaxed">
-            Obrigado, <strong className="text-slate-900">{nome}</strong>. Sua
-            pesquisa de interesse para o curso{" "}
-            <strong className="text-blue-600">{cursoSelecionado?.label}</strong> foi
-            enviada com sucesso ao banco de dados do CEEP Curitiba.
+            Obrigado, <strong className="text-slate-900">{nome}</strong>. Sua pesquisa de interesse foi enviada com sucesso ao banco de dados do CEEP Curitiba.
           </p>
+
+          <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-left text-sm space-y-2">
+            <div>
+              <span className="text-xs font-bold uppercase text-slate-400 block">1ª Opção de Curso:</span>
+              <strong className="text-blue-700">{curso1?.label}</strong>
+            </div>
+            {curso2 && (
+              <div className="border-t border-slate-200 pt-2">
+                <span className="text-xs font-bold uppercase text-slate-400 block">2ª Opção de Curso:</span>
+                <strong className="text-slate-700">{curso2?.label}</strong>
+              </div>
+            )}
+          </div>
+
           <button
             onClick={() => {
               setEnviado(false);
@@ -262,7 +282,6 @@ export default function InscricaoPesquisaInteresse() {
 
   return (
     <div className="bg-slate-50 min-h-screen py-12 relative">
-      {/* MODAL / POPUP: CPF JÁ CADASTRADO */}
       {modalCpfDuplicado && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
           <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-100 text-center space-y-4">
@@ -315,24 +334,19 @@ export default function InscricaoPesquisaInteresse() {
         </div>
       )}
 
-      {/* CONTEÚDO PRINCIPAL */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* CABEÇALHO */}
         <div className="mb-10 text-center lg:text-left">
           <span className="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 mb-3">
-            Período Noturno — 2º Semestre de 2026
+            Ensino médio com curso integrado - Inscriões 2027
           </span>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
-            Pesquisa de Interesse – Curso Técnico Subsequente
+            Pesquisa de Interesse – Ensino médio com curso integrado
           </h1>
           <p className="mt-2 text-sm sm:text-base text-slate-600 leading-relaxed">
-            Se você já concluiu o Ensino Médio e deseja se especializar
-            gratuitamente, preencha as informações abaixo para nos ajudar no
-            planejamento das turmas.
+            Caso você gostaria de cursar o ensino médio com um curso profissionalizante para te preparar para o mercado de trabalho, preencha as informações abaixo com os dados do matriculado, para concorrer ao ensino médio 2027 no CEEP Curitiba.
           </p>
         </div>
 
-        {/* ALERTA DE ERRO DA API */}
         {erroApi && (
           <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm flex items-center justify-between">
             <span>⚠️ {erroApi}</span>
@@ -345,57 +359,94 @@ export default function InscricaoPesquisaInteresse() {
           </div>
         )}
 
-        {/* FORMULÁRIO */}
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* CARD 1: SELEÇÃO DE CURSO */}
+
           <div
-            className={`bg-white p-6 sm:p-8 rounded-2xl border shadow-sm space-y-4 ${
-              erros.curso ? "border-red-500" : "border-slate-200"
+            className={`bg-white p-6 sm:p-8 rounded-2xl border shadow-sm space-y-6 ${
+              erros.curso1 || erros.cursoDuplicado ? "border-red-500" : "border-slate-200"
             }`}
           >
-            <label className="block text-sm font-bold text-slate-900 uppercase tracking-wider">
-              Qual curso técnico subsequente você tem interesse em cursar?{" "}
-              <span className="text-red-500">*</span>
-            </label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-              {CURSOS_DISPONIVEIS.map((item) => (
-                <label
-                  key={item.id_curso}
-                  className={`flex items-center gap-3 p-4 rounded-xl border font-semibold text-xs sm:text-sm cursor-pointer transition-all ${
-                    idCurso === item.id_curso
-                      ? "bg-blue-50/70 border-blue-500 text-blue-700 ring-2 ring-blue-500/10"
-                      : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="curso_interesse"
-                    value={item.id_curso}
-                    checked={idCurso === item.id_curso}
-                    onChange={() => {
-                      setIdCurso(item.id_curso);
-                      if (erros.curso) setErros((p) => ({ ...p, curso: false }));
-                    }}
-                    className="w-4 h-4 text-blue-600 border-slate-300 focus:ring-blue-500"
-                  />
-                  {item.label}
-                </label>
-              ))}
-            </div>
-            {erros.curso && (
-              <p className="text-xs text-red-500 font-medium">
-                Selecione um curso para continuar.
+            <div className="border-b border-slate-100 pb-2">
+              <h2 className="text-base font-bold text-slate-900 uppercase tracking-wider">
+                Opções de Cursos Desejados
+              </h2>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Escolha a sua primeira opção (obrigatória) e uma segunda opção alternativa.
               </p>
-            )}
+            </div>
+
+            <div>
+              <label htmlFor="curso1" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                1ª Opção de Curso <span className="text-red-500">*</span>
+              </label>
+              <select
+                id="curso1"
+                required
+                value={idCurso1 ?? ""}
+                onChange={(e) => {
+                  const val = e.target.value ? Number(e.target.value) : null;
+                  setIdCurso1(val);
+                  if (erros.curso1) setErros((p) => ({ ...p, curso1: false }));
+                  if (val && val === idCurso2) setIdCurso2(null);
+                }}
+                className={`w-full border rounded-xl px-4 py-3 text-sm text-slate-900 outline-none transition-all font-medium ${
+                  erros.curso1
+                    ? "bg-red-50 border-red-500 focus:border-red-600 focus:bg-white"
+                    : "bg-slate-50 border-slate-200 focus:border-blue-500 focus:bg-white"
+                }`}
+              >
+                <option value="">-- Selecione a 1ª opção de curso --</option>
+                {CURSOS_DISPONIVEIS.map((item) => (
+                  <option key={item.id_curso} value={item.id_curso}>
+                    {item.label}
+                  </option>
+                ))}
+              </select>
+              {erros.curso1 && (
+                <p className="mt-1 text-xs text-red-500 font-medium">
+                  Selecione a 1ª opção de curso para continuar.
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label htmlFor="curso2" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                2ª Opção de Curso <span className="text-slate-400 font-normal">(Opcional / Alternativa)</span>
+              </label>
+              <select
+                id="curso2"
+                value={idCurso2 ?? ""}
+                onChange={(e) => {
+                  const val = e.target.value ? Number(e.target.value) : null;
+                  setIdCurso2(val);
+                  if (erros.cursoDuplicado) setErros((p) => ({ ...p, cursoDuplicado: false }));
+                }}
+                className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-xl px-4 py-3 text-sm text-slate-900 outline-none transition-all font-medium"
+              >
+                <option value="">-- Selecione a 2ª opção de curso (Opcional) --</option>
+                {CURSOS_DISPONIVEIS.map((item) => (
+                  <option
+                    key={item.id_curso}
+                    value={item.id_curso}
+                    disabled={item.id_curso === idCurso1}
+                  >
+                    {item.label} {item.id_curso === idCurso1 ? "(Selecionado na 1ª opção)" : ""}
+                  </option>
+                ))}
+              </select>
+              {erros.cursoDuplicado && (
+                <p className="mt-1 text-xs text-red-500 font-medium">
+                  A 2ª opção de curso deve ser diferente da 1ª opção.
+                </p>
+              )}
+            </div>
           </div>
 
-          {/* CARD 2: DADOS PESSOAIS */}
           <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-5">
             <h2 className="text-base font-bold text-slate-900 uppercase tracking-wider border-b border-slate-100 pb-2">
               Dados de Identificação e Contato
             </h2>
 
-            {/* CPF COM VERIFICAÇÃO AUTOMÁTICA */}
             <div>
               <label
                 htmlFor="cpf"
@@ -434,7 +485,6 @@ export default function InscricaoPesquisaInteresse() {
               )}
             </div>
 
-            {/* Nome Completo */}
             <div>
               <label
                 htmlFor="nome"
@@ -453,7 +503,6 @@ export default function InscricaoPesquisaInteresse() {
               />
             </div>
 
-            {/* Telefones */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label
@@ -500,9 +549,9 @@ export default function InscricaoPesquisaInteresse() {
                   onChange={(e) => {
                     let v = e.target.value.replace(/\D/g, "");
                     if (v.length <= 11) {
-                      v = v.replace(/^(\d{2})(\d)/g, "($1) $2");
-                      v = v.length > 9 ? v.replace(/(\d{5})(\d)/, "$1-$2") : v.replace(/(\d{4})(\d)/, "$1-$2");
-                    }
+                        v = v.replace(/^(\d{2})(\d)/g, "($1) $2");
+                        v = v.length > 9 ? v.replace(/(\d{5})(\d)/, "$1-$2") : v.replace(/(\d{4})(\d)/, "$1-$2");
+                      }
                     setOutroTelefone(v);
                   }}
                   className="w-full bg-slate-50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-xl px-4 py-3 text-sm text-slate-900 outline-none transition-all"
@@ -511,7 +560,6 @@ export default function InscricaoPesquisaInteresse() {
               </div>
             </div>
 
-            {/* Email */}
             <div>
               <label
                 htmlFor="email"
@@ -543,7 +591,6 @@ export default function InscricaoPesquisaInteresse() {
             </div>
           </div>
 
-          {/* CARD 3: LGPD */}
           <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
             <div className="text-sm text-slate-600 leading-relaxed">
               <p>
@@ -575,7 +622,6 @@ export default function InscricaoPesquisaInteresse() {
             </div>
           </div>
 
-          {/* BOTÕES DE ENVIO */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4">
             <button
               type="submit"
@@ -601,7 +647,7 @@ export default function InscricaoPesquisaInteresse() {
 
             <button
               type="button"
-              disabled={carregando}
+              disabled={carregando || checandoCpf}
               onClick={limparFormulario}
               className="w-full sm:w-auto text-center bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-800 border border-slate-200 font-semibold px-6 py-3.5 rounded-xl text-sm transition-all"
             >
