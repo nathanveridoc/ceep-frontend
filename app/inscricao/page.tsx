@@ -81,12 +81,17 @@ export default function InscricaoPesquisaInteresse() {
 
     setChecandoCpf(true);
     try {
-      const res = await fetch("/api/aluno/bycpf", {
+      const anoAtual = new Date().getFullYear();
+
+      const res = await fetch("/api/inscricao/bycpfandyear", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ cpf: limpo }),
+        body: JSON.stringify({
+          cpf: limpo,
+          ano: anoAtual
+        }),
       });
 
       if (res.ok) {
@@ -96,11 +101,12 @@ export default function InscricaoPesquisaInteresse() {
         return true;
       }
     } catch (err) {
-      console.error("Erro ao consultar CPF:", err);
+      console.error("Erro ao consultar CPF por ano:", err);
     } finally {
       setChecandoCpf(false);
     }
-    return false;
+
+    return false; // CPF liberado (retornou 404 Not Found)
   };
 
   const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -290,11 +296,11 @@ export default function InscricaoPesquisaInteresse() {
             </div>
 
             <h3 className="text-xl font-extrabold text-slate-900">
-              CPF já cadastrado!
+              CPF já cadastrado para a inscrição deste ano!
             </h3>
 
             <p className="text-sm text-slate-600 leading-relaxed">
-              Identificamos que o CPF <strong className="text-slate-800">{cpf}</strong> já possui uma pesquisa de interesse registrada no sistema.
+              Identificamos que o CPF <strong className="text-slate-800">{cpf}</strong> já possui uma pesquisa de interesse deste ano registrada no sistema.
             </p>
 
             {cursoJaInscrito && (
