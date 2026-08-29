@@ -33,6 +33,7 @@ function validarCPF(cpf: string): boolean {
   return true;
 }
 
+
 function validarTelefone(telefone: string): boolean {
   const limpo = telefone.replace(/\D/g, "");
   return limpo.length === 10 || limpo.length === 11;
