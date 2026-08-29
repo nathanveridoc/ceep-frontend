@@ -10,7 +10,7 @@ export default function Home() {
           <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
             <span className="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse"></span>
-              Matrículas Abertas para o 2º Semestre
+              Matrículas Abertas para 2027
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-none">
               Construa seu futuro profissional no <span className="text-blue-600">CEEP</span>
