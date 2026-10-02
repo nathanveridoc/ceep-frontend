@@ -14,6 +14,8 @@ export default function Header() {
     { nome: "Cursos", rota: "/cursos" },
     { nome: "Contato", rota: "/contato" },
     { nome: "Localização", rota: "/localizacao" },
+    { nome: "Formulário", rota: "/formulario" },
+    { nome: "Inscrição", rota: "/inscricao" },
   ];
 
   return (
