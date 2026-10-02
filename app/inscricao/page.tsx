@@ -76,6 +76,7 @@ export default function InscricaoPesquisaInteresse() {
     email: false,
   });
 
+  // verificar se o CPF já está inscrito
   const verificarCpfExistente = async (cpfValor: string): Promise<boolean> => {
     const limpo = cpfValor.replace(/\D/g, "");
     if (limpo.length !== 11 || !validarCPF(cpfValor)) return false;
