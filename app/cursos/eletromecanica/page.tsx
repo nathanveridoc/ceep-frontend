@@ -1,10 +1,11 @@
 import React from 'react';
+import BotaoRedirecionamentoInscricao from '@/app/components/BotaoRedirecionamentoInscricao';
 
 export default function DetalheCursoEletromecanica() {
   return (
     <div className="bg-slate-50 min-h-screen py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* CABEÇALHO DO CURSO */}
         <div className="mb-12">
           <p className="text-blue-600 font-semibold uppercase tracking-wider text-sm mb-2">Catálogo de Cursos</p>
@@ -12,15 +13,15 @@ export default function DetalheCursoEletromecanica() {
             Curso Técnico em Eletromecânica
           </h1>
           <div className="flex-shrink-0 mt-2">
-            <a 
-              href="/conteudos-integrados-2026-eletromecanica.pdf" 
+            <a
+              href="/conteudos-integrados-2026-eletromecanica.pdf"
               download="Conteudos_Integrados_2026_Eletromecânica.pdf"
               className="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-700 hover:text-blue-600 px-4 py-2.5 rounded-xl text-sm font-semibold shadow-sm border border-slate-200 transition-all duration-200 group"
             >
-              <svg 
-                className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition-colors" 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition-colors"
+                fill="none"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -29,15 +30,15 @@ export default function DetalheCursoEletromecanica() {
             </a>
           </div>
           <div className="flex-shrink-0 mt-2">
-            <a 
-              href="/conteudos-subsequente-2016-eletromecanica.pdf" 
+            <a
+              href="/conteudos-subsequente-2016-eletromecanica.pdf"
               download="Conteudos_Subsequente_2016_Eletromecânica.pdf"
               className="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-700 hover:text-blue-600 px-4 py-2.5 rounded-xl text-sm font-semibold shadow-sm border border-slate-200 transition-all duration-200 group"
             >
-              <svg 
-                className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition-colors" 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition-colors"
+                fill="none"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -46,15 +47,15 @@ export default function DetalheCursoEletromecanica() {
             </a>
           </div>
           <div className="flex-shrink-0 mt-2">
-            <a 
-              href="/plano-de-curso-eletromecanica.pdf" 
+            <a
+              href="/plano-de-curso-eletromecanica.pdf"
               download="Plano_de_Curso_Eletromecânica.pdf"
               className="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-700 hover:text-blue-600 px-4 py-2.5 rounded-xl text-sm font-semibold shadow-sm border border-slate-200 transition-all duration-200 group"
             >
-              <svg 
-                className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition-colors" 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition-colors"
+                fill="none"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -63,15 +64,15 @@ export default function DetalheCursoEletromecanica() {
             </a>
           </div>
           <div className="flex-shrink-0 mt-2">
-            <a 
-              href="/matriz-curricular-eletromecanica.pdf" 
+            <a
+              href="/matriz-curricular-eletromecanica.pdf"
               download="Matriz_Curricular_Eletromecânica.pdf"
               className="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-700 hover:text-blue-600 px-4 py-2.5 rounded-xl text-sm font-semibold shadow-sm border border-slate-200 transition-all duration-200 group"
             >
-              <svg 
-                className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition-colors" 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition-colors"
+                fill="none"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -82,10 +83,10 @@ export default function DetalheCursoEletromecanica() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          
+
           {/* COLUNA ESQUERDA - Conteúdo Principal */}
           <div className="lg:col-span-2 space-y-10">
-            
+
             <section>
               <h2 className="text-2xl font-bold text-slate-900 mb-6">Objetivos e Habilidades</h2>
               <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
@@ -140,7 +141,7 @@ export default function DetalheCursoEletromecanica() {
 
           {/* COLUNA DIREITA - Informações Técnicas */}
           <div className="lg:col-span-1 space-y-8">
-            
+
             {/* Card de Informações Institucionais e Diretrizes */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm lg:mt-14">
                <h3 className="font-bold text-slate-900 mb-4">Diretrizes e Requisitos</h3>
@@ -188,7 +189,7 @@ export default function DetalheCursoEletromecanica() {
         <div className="mt-16 pt-16 border-t border-slate-200">
           <h2 className="text-2xl font-bold text-slate-900 mb-8 text-center">Itinerários Formativos</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
+
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
               <h4 className="font-bold text-blue-600 mb-3 text-lg">Certificações Intermediárias</h4>
               <ul className="text-sm text-slate-600 space-y-1.5">
@@ -199,7 +200,7 @@ export default function DetalheCursoEletromecanica() {
                 <li>• Operador Eletromecânico</li>
               </ul>
             </div>
-            
+
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
               <h4 className="font-bold text-blue-600 mb-3 text-lg">Especialização Técnica</h4>
               <ul className="text-sm text-slate-600 space-y-1.5 max-h-[220px] overflow-y-auto pr-1 scrollbar-thin">
@@ -210,7 +211,7 @@ export default function DetalheCursoEletromecanica() {
                 <li>• Biocombustíveis, Biogás e Biometano</li>
               </ul>
             </div>
-            
+
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
               <h4 className="font-bold text-blue-600 mb-3 text-lg">Verticalização (Graduação)</h4>
               <ul className="text-sm text-slate-600 space-y-1.5 max-h-[220px] overflow-y-auto pr-1 scrollbar-thin">
@@ -225,7 +226,7 @@ export default function DetalheCursoEletromecanica() {
 
           </div>
         </div>
-
+        <BotaoRedirecionamentoInscricao nomeCurso="Eletromecânica" />
       </div>
     </div>
   );
